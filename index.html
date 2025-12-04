@@ -11,28 +11,34 @@
             padding: 0; 
             height: 100%; 
             width: 100%;
+            overflow: hidden; /* ซ่อน Scrollbar ของตัว body หลัก */
             background-color: #ecfdf5; 
-            /* ลบ overflow: hidden ออก เพราะทำให้มือถือเลื่อนไม่ได้ */
         }
 
-        /* บังคับ iframe ให้เต็มจอแบบ Fixed เพื่อให้ Scroll ภายในทำงานได้ */
-        iframe { 
-            position: fixed;
+        /* สร้างกล่องเลื่อน (Wrapper) มาครอบ iframe อีกที */
+        /* วิธีนี้ช่วยหลอก iOS ให้ยอมเลื่อนหน้าจอได้ลื่นๆ */
+        .scroll-wrapper {
+            position: absolute;
             top: 0;
             left: 0;
-            bottom: 0;
-            right: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* ให้กล่องนี้เลื่อนได้ */
+            -webkit-overflow-scrolling: touch; /* คำสั่งวิเศษสำหรับ iOS ให้เลื่อนลื่น */
+        }
+
+        /* ตัว iframe ให้ยืดเต็มกล่อง wrapper */
+        iframe { 
             width: 100%; 
             height: 100%; 
             border: none; 
-            
-            /* เทคนิคแก้บั๊ก Scroll บน iOS */
-            -webkit-overflow-scrolling: touch;
-            overflow-y: scroll;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <iframe src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec"></iframe>
+    <div class="scroll-wrapper">
+        <iframe src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec"></iframe>
+    </div>
 </body>
 </html>
