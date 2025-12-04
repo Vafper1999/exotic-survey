@@ -2,11 +2,34 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background-color: #ecfdf5; }
-        iframe { width: 100%; height: 100%; border: none; }
+        /* รีเซ็ตค่าพื้นฐาน */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%;
+            background-color: #ecfdf5; 
+            /* ลบ overflow: hidden ออก เพราะทำให้มือถือเลื่อนไม่ได้ */
+        }
+
+        /* บังคับ iframe ให้เต็มจอแบบ Fixed เพื่อให้ Scroll ภายในทำงานได้ */
+        iframe { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            
+            /* เทคนิคแก้บั๊ก Scroll บน iOS */
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
     </style>
 </head>
 <body>
