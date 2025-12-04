@@ -2,43 +2,44 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
-    <style>
-        /* รีเซ็ตค่าพื้นฐาน */
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            width: 100%;
-            overflow: hidden; /* ซ่อน Scrollbar ของตัว body หลัก */
-            background-color: #ecfdf5; 
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
+                    colors: {
+                        exotic: { primary: '#047857', secondary: '#10b981', accent: '#d97706', bg: '#ecfdf5' }
+                    }
+                }
+            }
         }
-
-        /* สร้างกล่องเลื่อน (Wrapper) มาครอบ iframe อีกที */
-        /* วิธีนี้ช่วยหลอก iOS ให้ยอมเลื่อนหน้าจอได้ลื่นๆ */
-        .scroll-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto; /* ให้กล่องนี้เลื่อนได้ */
-            -webkit-overflow-scrolling: touch; /* คำสั่งวิเศษสำหรับ iOS ให้เลื่อนลื่น */
-        }
-
-        /* ตัว iframe ให้ยืดเต็มกล่อง wrapper */
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-            display: block;
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="scroll-wrapper">
-        <iframe src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec"></iframe>
+<body class="bg-exotic-bg min-h-screen flex flex-col items-center justify-center p-4 text-center">
+
+    <div class="max-w-md w-full bg-white p-8 rounded-3xl shadow-2xl border-t-8 border-exotic-primary transform transition-all hover:scale-105 duration-300">
+        <div class="text-6xl mb-4">🐍🦎</div>
+        
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">แบบสอบถาม<br>สัตว์แปลกถิ่น Gen Z</h1>
+        <p class="text-gray-500 mb-8 text-sm md:text-base">
+            การเปิดรับสื่อ ทัศนคติ และความต้องการเลี้ยงสัตว์แปลกถิ่น<br>
+            (ใช้เวลาเพียง 1-2 นาที)
+        </p>
+
+        <a href="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec" 
+           target="_self"
+           class="block w-full py-4 px-6 bg-gradient-to-r from-exotic-primary to-teal-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl hover:from-exotic-secondary hover:to-teal-500 transition-all transform active:scale-95 no-underline">
+            🚀 เริ่มทำแบบสอบถาม
+        </a>
+
+        <p class="mt-6 text-xs text-gray-400">
+            *ข้อมูลของท่านจะถูกเก็บเป็นความลับเพื่อการวิจัยเท่านั้น
+        </p>
     </div>
+
 </body>
 </html>
