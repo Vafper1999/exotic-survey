@@ -1,36 +1,197 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Prompt', 'sans-serif'] },
+          colors: { exotic: { primary: '#047857', secondary: '#10b981', accent: '#d97706', bg: '#ecfdf5' } }
         }
-        
-        html {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        body { 
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        iframe { 
-            width: 100%; 
-            height: 100%;
-            border: none; 
-            display: block;
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    /* CSS Styles */
+    body { background-color: #ecfdf5; }
+    .custom-radio, .custom-checkbox {
+      display: flex; align-items: center; padding: 0.75rem 1rem;
+      background-color: white; border: 1px solid #e5e7eb; border-radius: 0.75rem;
+      cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+    }
+    .custom-radio:hover, .custom-checkbox:hover {
+      border-color: #10b981; background-color: #ecfdf5; transform: translateY(-1px);
+    }
+    .custom-radio input, .custom-checkbox input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+    .custom-radio input[type="text"], .custom-checkbox input[type="text"] { position: static; opacity: 1; cursor: text; height: auto; width: auto; }
+    
+    /* Checked State */
+    .custom-radio:has(input[type="radio"]:checked), .custom-checkbox:has(input[type="checkbox"]:checked) {
+      background-color: #ecfdf5; border-color: #047857; color: #047857; font-weight: 500; box-shadow: 0 0 0 1px #047857;
+    }
+    
+    /* Indicators */
+    .custom-radio span::before {
+      content: ''; display: inline-block; width: 1.2em; height: 1.2em; margin-right: 0.5em;
+      border: 2px solid #d1d5db; border-radius: 50%; vertical-align: middle; background: white;
+    }
+    .custom-radio input[type="radio"]:checked + span::before {
+      background-color: #047857; border-color: #047857; box-shadow: inset 0 0 0 3px white;
+    }
+    .custom-checkbox span::before {
+      content: ''; display: inline-block; width: 1.2em; height: 1.2em; margin-right: 0.5em;
+      border: 2px solid #d1d5db; border-radius: 0.25rem; vertical-align: middle; background: white;
+    }
+    .custom-checkbox input[type="checkbox"]:checked + span::before {
+      background-color: #047857; border-color: #047857;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10.97 4.97a.75.75 0 011.07 1.05l-3.99 4.99a.75.75 0 01-1.08.02L4.324 8.384a.75.75 0 111.06-1.06l2.094 2.093 3.473-4.425z'/%3E%3C/svg%3E");
+      background-size: 80%; background-position: center; background-repeat: no-repeat;
+    }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] summary svg { transform: rotate(180deg); }
+  </style>
 </head>
-<body>
-    <iframe src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec"></iframe>
+<body class="text-gray-700 font-sans">
+
+  <div id="loading-spinner" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center hidden z-50">
+    <div class="flex flex-col items-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-exotic-primary mb-4"></div>
+      <span class="text-xl font-bold text-exotic-primary animate-pulse">กำลังบันทึกข้อมูล...</span>
+    </div>
+  </div>
+  <div id="response-message" class="fixed top-5 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-2xl text-white font-bold hidden z-50 text-sm md:text-base"></div>
+
+  <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <header class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8 border-t-8 border-exotic-primary">
+      <div class="bg-gradient-to-r from-exotic-primary to-teal-800 p-8 text-center text-white relative overflow-hidden">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-wide mb-2">🐍 Exotic Pets Gen Z</h1>
+        <p class="text-emerald-100 text-sm md:text-base font-light mb-6">การเปิดรับดิจิทัลคอนเทนต์ ทัศนคติ และความต้องการเลี้ยงสัตว์แปลกถิ่น <br>ของคนเจเนอเรชัน Z ในกรุงเทพมหานคร</p>
+        <details class="bg-white/10 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden transition-all duration-300">
+            <summary class="p-3 cursor-pointer hover:bg-white/10 flex items-center justify-center gap-2 select-none transition-colors">
+                <span class="text-yellow-300 font-medium flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                    หมายเหตุ: คำนิยาม "สัตว์แปลกถิ่น"
+                </span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-200 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+            </summary>
+            <div class="p-4 text-left text-sm text-emerald-50 bg-black/10 border-t border-white/10 leading-relaxed">
+                <p>ในแบบสอบถามนี้ <strong>"สัตว์แปลกถิ่น" (Exotic animals)</strong> หมายถึง สัตว์ที่ไม่ใช่สัตว์เลี้ยงทั่วไป...</p>
+            </div>
+        </details>
+      </div>
+    </header>
+
+    <form id="quizForm" class="space-y-8">
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-2 h-full bg-exotic-accent"></div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">1. ข้อมูลทั่วไป</h3>
+            <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">1.1 เพศ <span class="text-red-400">*</span></label><div class="grid grid-cols-2 md:grid-cols-3 gap-3"><label class="custom-radio"><input type="radio" name="gender" value="ชาย" required><span>ชาย</span></label><label class="custom-radio"><input type="radio" name="gender" value="หญิง"><span>หญิง</span></label><label class="custom-radio"><input type="radio" name="gender" value="LGBTQIA+"><span>LGBTQIA+</span></label></div></div>
+            <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">1.2 ระดับการศึกษา <span class="text-red-400">*</span></label><div class="space-y-2"><label class="custom-radio w-full"><input type="radio" name="education" value="ต่ำกว่าปริญญาตรี" required><span>ต่ำกว่าปริญญาตรี</span></label><label class="custom-radio w-full"><input type="radio" name="education" value="ปริญญาตรี"><span>ปริญญาตรี</span></label><label class="custom-radio w-full"><input type="radio" name="education" value="สูงกว่าปริญญาตรี"><span>สูงกว่าปริญญาตรี</span></label></div></div>
+            <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">1.3 อาชีพ <span class="text-red-400">*</span></label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-radio"><input type="radio" name="occupation" value="นักเรียน/นักศึกษา" required onchange="toggleOther('occupation',false)"><span>นักเรียน/นักศึกษา</span></label><label class="custom-radio"><input type="radio" name="occupation" value="พนักงานบริษัทเอกชน" onchange="toggleOther('occupation',false)"><span>พนักงานบริษัทเอกชน</span></label><label class="custom-radio"><input type="radio" name="occupation" value="ข้าราชการ/รัฐวิสาหกิจ" onchange="toggleOther('occupation',false)"><span>ข้าราชการ/รัฐวิสาหกิจ</span></label><label class="custom-radio"><input type="radio" name="occupation" value="ธุรกิจส่วนตัว/ค้าขาย" onchange="toggleOther('occupation',false)"><span>ธุรกิจส่วนตัว</span></label><label class="custom-radio"><input type="radio" name="occupation" value="อาชีพอิสระ (freelance)" onchange="toggleOther('occupation',false)"><span>ฟรีแลนซ์</span></label><label class="custom-radio flex flex-wrap items-center h-auto"><div class="flex items-center"><input type="radio" name="occupation" value="อื่น ๆ" id="occupation-other-radio" onchange="toggleOther('occupation',true)"><span class="mr-2">อื่นๆ:</span></div><input type="text" name="occupation_other_text" id="occupation-other-text" class="flex-grow border-b border-gray-300 outline-none px-2 py-1 text-sm bg-transparent" placeholder="โปรดระบุ..." disabled></label></div></div>
+            <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">1.4 รายได้ <span class="text-red-400">*</span></label><select name="income" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none" required><option value="" disabled selected>เลือกรายได้...</option><option value="ต่ำกว่า 15,000 บาท">ต่ำกว่า 15,000 บาท</option><option value="15,000-30,000 บาท">15,000-30,000 บาท</option><option value="30,001-50,000 บาท">30,001-50,000 บาท</option><option value="50,001-70,000 บาท">50,001-70,000 บาท</option><option value="ตั้งแต่ 70,001 บาทขึ้นไป">ตั้งแต่ 70,001 บาทขึ้นไป</option></select></div>
+            <div class="mb-2"><label class="block text-gray-800 font-medium mb-3">1.5 ที่พัก <span class="text-red-400">*</span></label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-radio"><input type="radio" name="housing" value="บ้านเดี่ยว" required onchange="toggleOther('housing',false)"><span>บ้านเดี่ยว</span></label><label class="custom-radio"><input type="radio" name="housing" value="ทาวน์เฮาส์/ทาวน์โฮม" onchange="toggleOther('housing',false)"><span>ทาวน์เฮาส์</span></label><label class="custom-radio"><input type="radio" name="housing" value="คอนโดมิเนียม" onchange="toggleOther('housing',false)"><span>คอนโดมิเนียม</span></label><label class="custom-radio"><input type="radio" name="housing" value="อพาร์ทเม้นท์/หอพัก" onchange="toggleOther('housing',false)"><span>หอพัก</span></label><label class="custom-radio flex flex-wrap items-center h-auto"><div class="flex items-center"><input type="radio" name="housing" value="อื่น ๆ" id="housing-other-radio" onchange="toggleOther('housing',true)"><span class="mr-2">อื่นๆ:</span></div><input type="text" name="housing_other_text" id="housing-other-text" class="flex-grow border-b border-gray-300 outline-none px-2 py-1 text-sm bg-transparent" placeholder="โปรดระบุ..." disabled></label></div></div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-2 h-full bg-exotic-secondary"></div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">2. การเปิดรับสื่อ 📱</h3>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-3">2.1 ช่องทางรับข้อมูล (เลือกได้หลายข้อ)</label><div class="grid grid-cols-2 md:grid-cols-3 gap-3"><label class="custom-checkbox"><input type="checkbox" name="platforms" value="Facebook"><span>Facebook</span></label><label class="custom-checkbox"><input type="checkbox" name="platforms" value="Instagram"><span>Instagram</span></label><label class="custom-checkbox"><input type="checkbox" name="platforms" value="TikTok"><span>TikTok</span></label><label class="custom-checkbox"><input type="checkbox" name="platforms" value="YouTube"><span>YouTube</span></label><label class="custom-checkbox"><input type="checkbox" name="platforms" value="X (Twitter)"><span>X (Twitter)</span></label><label class="custom-checkbox"><input type="checkbox" name="platforms" value="Websites"><span>Websites</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-3">2.2 ความถี่ในการเปิดรับ <span class="text-red-400">*</span></label><div class="space-y-2"><label class="custom-radio w-full"><input type="radio" name="frequency" value="นาน ๆ ครั้ง (น้อยกว่าเดือนละครั้ง)" required><span>นาน ๆ ครั้ง</span></label><label class="custom-radio w-full"><input type="radio" name="frequency" value="เดือนละ 1 – 3 ครั้ง"><span>เดือนละ 1 – 3 ครั้ง</span></label><label class="custom-radio w-full"><input type="radio" name="frequency" value="สัปดาห์ละ 1-3 ครั้ง"><span>สัปดาห์ละ 1-3 ครั้ง</span></label><label class="custom-radio w-full"><input type="radio" name="frequency" value="เกือบทุกวัน"><span>เกือบทุกวัน</span></label><label class="custom-radio w-full"><input type="radio" name="frequency" value="ทุกวัน"><span>ทุกวัน</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-3">2.3 เนื้อหาที่สนใจ (เลือกได้หลายข้อ)</label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-checkbox"><input type="checkbox" name="content_types" value="คลิปสัตว์น่ารัก"><span>🎥 คลิปสัตว์น่ารัก</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="วิธีการดูแล"><span>🩺 วิธีการดูแล</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="สายพันธุ์/ผสมพันธุ์"><span>🧬 สายพันธุ์</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="ราคา/แหล่งซื้อ"><span>💰 ราคา/แหล่งซื้อ</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="กฎหมาย"><span>⚖️ กฎหมาย</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="Review"><span>⭐ รีวิวจากผู้เลี้ยง</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="ระบบนิเวศ"><span>🌿 ระบบนิเวศ</span></label><label class="custom-checkbox"><input type="checkbox" name="content_types" value="บันเทิง"><span>🎭 บันเทิง</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.4 ติดตาม Influencer หรือไม่ <span class="text-red-400">*</span></label><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><label class="custom-radio"><input type="radio" name="influencer_follow" value="ไม่ติดตาม" required><span>ไม่ติดตาม</span></label><label class="custom-radio"><input type="radio" name="influencer_follow" value="ติดตาม 1-3 บัญชี"><span>1-3 บัญชี</span></label><label class="custom-radio"><input type="radio" name="influencer_follow" value="ติดตาม 4-6 บัญชี"><span>4-6 บัญชี</span></label><label class="custom-radio"><input type="radio" name="influencer_follow" value="มากกว่า 6 บัญชี"><span>6+ บัญชี</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.5 ระดับความเชื่อถือ <span class="text-red-400">*</span></label><div class="overflow-x-auto rounded-xl border border-gray-200"><table class="w-full text-sm text-gray-600"><thead class="bg-gray-100 text-xs"><tr><th class="py-3 px-4 text-left w-1/3">แหล่งข้อมูล</th><th class="text-center w-10">5</th><th class="text-center w-10">4</th><th class="text-center w-10">3</th><th class="text-center w-10">2</th><th class="text-center w-10">1</th></tr></thead><tbody class="divide-y divide-gray-100"><script>["ผู้เชี่ยวชาญ","Influencer","กลุ่มผู้เลี้ยง","ร้านค้า","คนดัง"].forEach((l,i)=>{const n=["trust_expert","trust_influencer","trust_group","trust_shop","trust_celeb"];document.write(`<tr class="hover:bg-gray-50"><td class="py-3 px-4">${l}</td>${[5,4,3,2,1].map(v=>`<td class="text-center"><input type="radio" name="${n[i]}" value="${v}" required class="accent-exotic-primary w-4 h-4"></td>`).join('')}</tr>`)})</script></tbody></table></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.6 ความรู้ผู้เสนอ <span class="text-red-400">*</span></label><div class="flex gap-1"><script>for(let i=1;i<=5;i++)document.write(`<label class="custom-radio flex-1 justify-center"><input type="radio" name="knowledge_ability" value="${i}" required><span>${i}</span></label>`)</script></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.7 บุคลิกผู้เสนอ <span class="text-red-400">*</span></label><div class="flex gap-1"><script>for(let i=1;i<=5;i++)document.write(`<label class="custom-radio flex-1 justify-center"><input type="radio" name="attractiveness" value="${i}" required><span>${i}</span></label>`)</script></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.8 รูปแบบสื่อที่ชอบ <span class="text-red-400">*</span></label><div class="space-y-2"><label class="custom-radio w-full"><input type="radio" name="media_type" value="Short Video" required><span>🎬 วิดีโอสั้น</span></label><label class="custom-radio w-full"><input type="radio" name="media_type" value="Review"><span>🗣️ รีวิว</span></label><label class="custom-radio w-full"><input type="radio" name="media_type" value="Article"><span>📄 บทความ</span></label><label class="custom-radio w-full"><input type="radio" name="media_type" value="Community"><span>👥 กลุ่มพูดคุย</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.9 ความรู้ตนเอง <span class="text-red-400">*</span></label><div class="space-y-2"><label class="custom-radio w-full"><input type="radio" name="self_knowledge" value="1" required><span>1. ไม่มีความรู้เลย</span></label><label class="custom-radio w-full"><input type="radio" name="self_knowledge" value="2"><span>2. มีความรู้น้อย</span></label><label class="custom-radio w-full"><input type="radio" name="self_knowledge" value="3"><span>3. ปานกลาง</span></label><label class="custom-radio w-full"><input type="radio" name="self_knowledge" value="4"><span>4. มาก</span></label><label class="custom-radio w-full"><input type="radio" name="self_knowledge" value="5"><span>5. ผู้เชี่ยวชาญ</span></label></div></div>
+            <div class="mb-8"><label class="block text-gray-800 font-medium mb-2">2.10 ข้อมูลครบถ้วน <span class="text-red-400">*</span></label><div class="space-y-2"><label class="custom-radio w-full"><input type="radio" name="completeness" value="1" required><span>1. ไม่ครบถ้วน</span></label><label class="custom-radio w-full"><input type="radio" name="completeness" value="2"><span>2. ค่อนข้างครบ</span></label><label class="custom-radio w-full"><input type="radio" name="completeness" value="3"><span>3. ครบถ้วน</span></label></div></div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border-l-4 border-exotic-primary">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">3. ทัศนคติ</h3>
+            <div class="overflow-x-auto"><table class="w-full text-sm text-gray-600"><thead class="bg-gray-100 text-xs"><tr><th class="py-2 px-2 text-left w-1/2">ประเด็น</th><th class="text-center px-1">5</th><th class="text-center px-1">4</th><th class="text-center px-1">3</th><th class="text-center px-1">2</th><th class="text-center px-1">1</th></tr></thead><tbody class="divide-y divide-gray-100"><script>const att=["1. ท้าทาย","2. คุณภาพชีวิต","3. เอกลักษณ์","4. พัฒนาทักษะ","5. ระบบนิเวศ","6. อนุรักษ์","7. เพาะพันธุ์ยั่งยืน","8. ตระหนักรู้","9. เรียนรู้พฤติกรรม","10. ผ่อนคลาย"];att.forEach((t,i)=>{document.write(`<tr class="hover:bg-yellow-50"><td class="py-3 px-2">${t}</td>${[5,4,3,2,1].map(v=>`<td class="text-center"><input type="radio" name="attitude_${i+1}" value="${v}" required class="accent-exotic-primary"></td>`).join('')}</tr>`)})</script></tbody></table></div>
+        </section>
+
+        <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-100 rounded-full -translate-y-10 translate-x-10 opacity-50"></div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">4. ความต้องการเลี้ยง 🦎</h3>
+            <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">4.1 ความต้องการเลี้ยงสัตว์แปลกถิ่น <span class="text-red-400">*</span></label><div class="space-y-3"><label class="custom-radio w-full border-red-100 bg-red-50 hover:bg-red-100"><input type="radio" name="desire_to_keep" value="1. ไม่ต้องการเลี้ยง" data-skip-to="q4-6" required><span>❌ 1. ไม่ต้องการเลี้ยง (ข้ามไปข้อสุดท้าย)</span></label><label class="custom-radio w-full"><input type="radio" name="desire_to_keep" value="2. ไม่แน่ใจ" data-skip-to="q4-2"><span>🤔 2. ไม่แน่ใจ</span></label><label class="custom-radio w-full"><input type="radio" name="desire_to_keep" value="3. สนใจ" data-skip-to="q4-2"><span>👀 3. สนใจ</span></label><label class="custom-radio w-full"><input type="radio" name="desire_to_keep" value="4. ต้องการเลี้ยง" data-skip-to="q4-2"><span>🤭 4. ต้องการเลี้ยง</span></label><label class="custom-radio w-full border-emerald-100 bg-emerald-50 hover:bg-emerald-100"><input type="radio" name="desire_to_keep" value="5. ต้องการเลี้ยงมาก" data-skip-to="q4-2"><span>💖 5. ต้องการเลี้ยงอย่างมาก</span></label></div></div>
+            <div id="optional-questions" class="space-y-6 overflow-hidden transition-all duration-500 ease-in-out pl-4 border-l-2 border-dashed border-gray-300">
+                <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">4.2 สาเหตุที่อยากเลี้ยง</label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-checkbox"><input type="checkbox" name="reasons" value="ความชื่นชอบ"><span>ความชื่นชอบ</span></label><label class="custom-checkbox"><input type="checkbox" name="reasons" value="ความท้าทาย"><span>ความท้าทาย</span></label><label class="custom-checkbox"><input type="checkbox" name="reasons" value="หายาก/แตกต่าง"><span>หายาก/แตกต่าง</span></label><label class="custom-checkbox"><input type="checkbox" name="reasons" value="การลงทุน"><span>การลงทุน</span></label><label class="custom-checkbox"><input type="checkbox" name="reasons" value="ตามกระแส"><span>ตามกระแส</span></label><label class="custom-checkbox flex flex-wrap items-center h-auto"><div class="flex items-center"><input type="checkbox" name="reasons" value="อื่นๆ" id="reasons-other-check" onchange="toggleOtherCheckbox('reasons')"><span class="mr-2">อื่นๆ:</span></div><input type="text" name="reasons_other_text" id="reasons-other-text" class="flex-grow border-b border-gray-300 outline-none px-2 py-1 text-sm bg-transparent" placeholder="..." disabled></label></div></div>
+                <div class="mb-6"><label class="block text-gray-800 font-medium mb-3">4.3 สัตว์ที่สนใจ</label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Reptiles"><span>🐍 สัตว์เลื้อยคลาน</span></label><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Amphibians"><span>🐸 ครึ่งบกครึ่งน้ำ</span></label><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Mammals"><span>🐿️ สัตว์เลี้ยงลูกด้วยนม</span></label><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Insects"><span>🕷️ แมลง</span></label><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Birds"><span>🦜 นก</span></label><label class="custom-checkbox"><input type="checkbox" name="pet_types" value="Fish"><span>🐡 ปลา</span></label><label class="custom-checkbox flex flex-wrap items-center h-auto"><div class="flex items-center"><input type="checkbox" name="pet_types" value="อื่นๆ" id="pettypes-other-check" onchange="toggleOtherCheckbox('pettypes')"><span class="mr-2">อื่นๆ:</span></div><input type="text" name="pettypes_other_text" id="pettypes-other-text" class="flex-grow border-b border-gray-300 outline-none px-2 py-1 text-sm bg-transparent" placeholder="..." disabled></label></div></div>
+                <div><label class="block text-gray-800 font-medium mb-3">4.5 งบประมาณ</label><select name="budget" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none" required><option value="" disabled selected>เลือกช่วงงบประมาณ...</option><option value="ต่ำกว่า 1,000 บาท">1. ต่ำกว่า 1,000 บาท</option><option value="1,001 - 3,000 บาท">2. 1,001 - 3,000 บาท</option><option value="3,001 - 5,000 บาท">3. 3,001 - 5,000 บาท</option><option value="5,001 - 10,000 บาท">4. 5,001 - 10,000 บาท</option><option value="10,001 - 20,000 บาท">5. 10,001 - 20,000 บาท</option><option value="20,001 - 50,000 บาท">6. 20,001 - 50,000 บาท</option><option value="50,001 - 100,000 บาท">7. 50,001 - 100,000 บาท</option><option value="มากกว่า 100,000 บาทขึ้นไป">8. มากกว่า 100,000 บาทขึ้นไป</option></select></div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-gray-100"><label class="block text-gray-800 font-medium mb-3">4.6 ปัจจัยสำคัญที่สุด <span class="text-red-400">*</span></label><div class="grid grid-cols-1 md:grid-cols-2 gap-3"><label class="custom-radio"><input type="radio" name="important_factor" value="Cost" required><span>💰 ค่าใช้จ่าย</span></label><label class="custom-radio"><input type="radio" name="important_factor" value="Law"><span>⚖️ กฎหมาย</span></label><label class="custom-radio"><input type="radio" name="important_factor" value="Difficulty"><span>🔧 ความยากง่าย</span></label><label class="custom-radio"><input type="radio" name="important_factor" value="Space"><span>🏠 พื้นที่</span></label><label class="custom-radio"><input type="radio" name="important_factor" value="Vet"><span>🏥 สัตวแพทย์</span></label></div></div>
+        </section>
+
+        <div class="text-center pt-6 pb-12"><button type="submit" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-200 bg-gradient-to-r from-exotic-primary to-teal-600 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 focus:outline-none w-full md:w-auto"><span>🚀 ส่งแบบสอบถาม</span></button></div>
+    </form>
+  </div>
+
+  <script>
+    function toggleOther(g,o){let t=document.getElementById(g+'-other-text');if(t){t.disabled=!o;if(o)setTimeout(()=>t.focus(),100);else t.value=''}}
+    function toggleOtherCheckbox(p){let c=document.getElementById(p+'-other-check'),t=document.getElementById(p+'-other-text');if(c&&t){t.disabled=!c.checked;if(c.checked)setTimeout(()=>t.focus(),100);else t.value=''}}
+    
+    // Skip Logic
+    const optSec=document.getElementById('optional-questions'), desRad=document.querySelectorAll('input[name="desire_to_keep"]');
+    function checkSkip(){
+        let skip=false; desRad.forEach(r=>{if(r.checked&&r.getAttribute('data-skip-to')==='q4-6')skip=true});
+        if(skip){
+            optSec.style.maxHeight='0px'; optSec.style.opacity='0';
+            optSec.querySelectorAll('input, select').forEach(el=>el.disabled=true);
+        }else{
+            optSec.style.maxHeight='1500px'; optSec.style.opacity='1';
+            optSec.querySelectorAll('input:not([id$="-other-text"]), select').forEach(el=>el.disabled=false);
+            ['reasons','pettypes'].forEach(k=>{let c=document.getElementById(k+'-other-check'),t=document.getElementById(k+'-other-text');if(c&&t)t.disabled=!c.checked});
+        }
+    }
+    desRad.forEach(r=>r.addEventListener('change',checkSkip)); window.onload=checkSkip;
+
+    // --- ส่วนส่งข้อมูล (API) ---
+    const form=document.getElementById('quizForm'), spin=document.getElementById('loading-spinner'), msg=document.getElementById('response-message');
+    // **********************************************
+    // ⚠️ เอา URL ที่ได้จากการ Deploy มาใส่ตรงนี้!
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec'; 
+    // **********************************************
+
+    form.addEventListener('submit',e=>{
+        e.preventDefault(); spin.style.display='flex';
+        const fd=new FormData(form), d={}; fd.forEach((v,k)=>{if(!d[k])d[k]=v;else{if(!Array.isArray(d[k]))d[k]=[d[k]];d[k].push(v)}});
+        ['platforms','content_types','reasons','pet_types'].forEach(k=>{
+            let chk=document.querySelectorAll(`input[name="${k}"]:checked`), vals=Array.from(chk).map(c=>c.value);
+            if(k==='reasons'||k==='pet_types'){
+                let otc=document.getElementById((k==='reasons'?'reasons':'pettypes')+'-other-check');
+                let ott=document.getElementById((k==='reasons'?'reasons':'pettypes')+'-other-text');
+                if(otc&&otc.checked&&ott.value.trim()){ let idx=vals.indexOf('อื่นๆ'); if(idx>-1)vals[idx]='อื่นๆ: '+ott.value.trim(); }
+            }
+            d[k]=vals;
+        });
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // สำคัญมาก! เพื่อไม่ให้ติด CORS Error
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(d)
+        })
+        .then(() => {
+            // เนื่องจากใช้ no-cors เราจะไม่รู้ผลลัพธ์ที่แท้จริง แต่ Google Script จะทำงาน
+            // ให้ถือว่าสำเร็จไปเลยเพื่อ UX ที่ดี
+            spin.style.display='none'; 
+            msg.textContent="✅ บันทึกสำเร็จ ขอบคุณครับ!"; msg.style.display='block'; msg.classList.remove('bg-red-500'); msg.classList.add('bg-exotic-secondary');
+            form.reset(); window.scrollTo({top:0,behavior:'smooth'}); checkSkip(); 
+            document.querySelectorAll('input[id$="-other-text"]').forEach(i=>i.disabled=true);
+            setTimeout(()=>msg.style.display='none',3000);
+        })
+        .catch(err => {
+            spin.style.display='none'; msg.textContent="❌ Error: "+err; msg.style.display='block'; msg.classList.add('bg-red-500');
+        });
+    });
+  </script>
 </body>
 </html>
