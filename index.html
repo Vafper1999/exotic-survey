@@ -2,63 +2,10 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body, html { 
-            width: 100%;
-            height: 100%;
-            background-color: #ecfdf5;
-        }
-        
-        /* ให้ body เลื่อนได้ปกติ */
-        body {
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        /* iframe ให้ขยายตามเนื้อหาข้างใน */
-        iframe { 
-            width: 100%; 
-            min-height: 100vh; /* อย่างน้อยเท่าหน้าจอ */
-            border: none; 
-            display: block;
-        }
-    </style>
+    <meta http-equiv="refresh" content="0; url=https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec">
+    <title>กำลังเปิดแบบสอบถาม...</title>
 </head>
 <body>
-    <iframe id="surveyFrame" src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec"></iframe>
-    
-    <script>
-        // รอให้ iframe โหลดเสร็จ แล้วปรับความสูงตามเนื้อหาจริง
-        const iframe = document.getElementById('surveyFrame');
-        
-        iframe.onload = function() {
-            try {
-                // พยายามอ่านความสูงจาก iframe (อาจไม่ได้ผลถ้า cross-origin)
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                const height = iframeDoc.body.scrollHeight;
-                iframe.style.height = height + 'px';
-            } catch (e) {
-                // ถ้าอ่านไม่ได้ (cross-origin) ให้ใช้ความสูงมาตรฐาน
-                iframe.style.height = '3000px'; // ปรับค่านี้ตามความยาวฟอร์มจริง
-            }
-        };
-        
-        // สำหรับ iOS - บังคับให้ recalculate หลังโหลด
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                window.scrollTo(0, 1);
-                window.scrollTo(0, 0);
-            }, 100);
-        });
-    </script>
+    <p>กำลังเปิดแบบสอบถาม...</p>
 </body>
 </html>
