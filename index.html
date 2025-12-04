@@ -2,44 +2,121 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>แบบสอบถามสัตว์แปลกถิ่น Gen Z</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* รีเซ็ตค่าพื้นฐาน */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%;
+            overflow: hidden; /* ล็อก Body ไม่ให้เลื่อนเอง */
+            background-color: #ecfdf5; 
+            font-family: 'Prompt', sans-serif;
+        }
+
+        /* กล่องหุ้ม iframe ที่ทำหน้าที่เลื่อน */
+        #scroll-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* ให้กล่องนี้มี Scrollbar */
+            -webkit-overflow-scrolling: touch; /* ให้เลื่อนลื่นบน iOS */
+            z-index: 1;
+        }
+
+        iframe { 
+            width: 100%; 
+            /* ความสูงต้องมากพอให้แสดงผลครบ หรือ 100% แล้วให้ wrapper เลื่อน */
+            min-height: 100%; 
+            border: none; 
+            display: block;
+        }
+
+        /* --- ปุ่มควบคุม (Controller) --- */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-scroll {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #047857; /* สีเขียวธีมคุณ */
+            color: white;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.2s;
+        }
+
+        .btn-scroll:active {
+            transform: scale(0.9);
+            background-color: #065f46;
+        }
+
+        /* ปุ่มแก้ปัญหาฉุกเฉิน (เปิดหน้าใหม่) */
+        .btn-emergency {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #d97706;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #d97706;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec" 
+       target="_blank" class="btn-emergency">
+       ⚠️ เปิดหน้าเว็บหลัก (ถ้ามีปัญหา)
+    </a>
+
+    <div id="scroll-wrapper">
+        <iframe id="survey-frame" 
+                src="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec">
+        </iframe>
+        <div style="height: 100px;"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-scroll" onclick="scrollPage(-150)">▲</button>
+        <button class="btn-scroll" onclick="scrollPage(150)">▼</button>
+    </div>
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Prompt', 'sans-serif'] },
-                    colors: {
-                        exotic: { primary: '#047857', secondary: '#10b981', accent: '#d97706', bg: '#ecfdf5' }
-                    }
-                }
-            }
+        // ฟังก์ชันเลื่อนหน้าจอ
+        function scrollPage(amount) {
+            const wrapper = document.getElementById('scroll-wrapper');
+            wrapper.scrollBy({
+                top: amount,
+                left: 0,
+                behavior: 'smooth' // เลื่อนแบบนุ่มนวล
+            });
         }
     </script>
-</head>
-<body class="bg-exotic-bg min-h-screen flex flex-col items-center justify-center p-4 text-center">
-
-    <div class="max-w-md w-full bg-white p-8 rounded-3xl shadow-2xl border-t-8 border-exotic-primary transform transition-all hover:scale-105 duration-300">
-        <div class="text-6xl mb-4">🐍🦎</div>
-        
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">แบบสอบถาม<br>สัตว์แปลกถิ่น Gen Z</h1>
-        <p class="text-gray-500 mb-8 text-sm md:text-base">
-            การเปิดรับสื่อ ทัศนคติ และความต้องการเลี้ยงสัตว์แปลกถิ่น<br>
-            (ใช้เวลาเพียง 1-2 นาที)
-        </p>
-
-        <a href="https://script.google.com/macros/s/AKfycbz3tOmfxHmrSlmPIyjqaei0eaBsEK0N3z08RXQl_xnWo3ph8NSn-XcUTw-4fFfVGEfLVQ/exec" 
-           target="_self"
-           class="block w-full py-4 px-6 bg-gradient-to-r from-exotic-primary to-teal-600 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl hover:from-exotic-secondary hover:to-teal-500 transition-all transform active:scale-95 no-underline">
-            🚀 เริ่มทำแบบสอบถาม
-        </a>
-
-        <p class="mt-6 text-xs text-gray-400">
-            *ข้อมูลของท่านจะถูกเก็บเป็นความลับเพื่อการวิจัยเท่านั้น
-        </p>
-    </div>
 
 </body>
 </html>
